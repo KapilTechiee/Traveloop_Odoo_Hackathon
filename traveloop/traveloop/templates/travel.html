@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Travel Groups</title>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body{
+      background:#f3f5f4;
+      padding:20px;
+    }
+
+    .container{
+      max-width:1200px;
+      margin:auto;
+      background:white;
+      border-radius:20px;
+      overflow:hidden;
+      box-shadow:0 0 10px rgba(0,0,0,0.1);
+    }
+
+    /* =========================
+       TOP HEADER SECTION
+    ========================== */
+
+    .hero{
+      background:linear-gradient(135deg,#052d25,#0a6b5f);
+      padding:40px 50px;
+      color:white;
+      position:relative;
+    }
+
+    .hero h1{
+      font-size:52px;
+      margin-bottom:10px;
+      font-weight:bold;
+    }
+
+    .hero p{
+      font-size:18px;
+      margin-bottom:30px;
+      color:#d8e8e2;
+    }
+
+    /* =========================
+       SEARCH BAR SECTION
+    ========================== */
+
+    .search-bar{
+      display:flex;
+      gap:15px;
+      flex-wrap:wrap;
+    }
+
+    .search-bar input,
+    .search-bar select{
+      padding:18px;
+      border:none;
+      border-radius:12px;
+      font-size:16px;
+      outline:none;
+    }
+
+    .search-input{
+      flex:1;
+      min-width:300px;
+    }
+
+    .search-btn{
+      background:#1db287;
+      color:white;
+      border:none;
+      padding:18px 30px;
+      border-radius:12px;
+      font-size:16px;
+      cursor:pointer;
+      font-weight:bold;
+    }
+
+    .search-btn:hover{
+      background:#14926e;
+    }
+
+    /* =========================
+       CREATE GROUP BOX
+    ========================== */
+
+    .create-group{
+      margin:40px;
+      border:2px dashed #4fa48d;
+      border-radius:20px;
+      text-align:center;
+      padding:40px;
+      background:#f9fdfb;
+    }
+
+    .plus{
+      font-size:50px;
+      color:#1ea37d;
+      margin-bottom:10px;
+    }
+
+    .create-group h2{
+      color:#0e6a58;
+      margin-bottom:10px;
+      font-size:32px;
+    }
+
+    .create-group p{
+      color:#666;
+      font-size:18px;
+    }
+
+    /* =========================
+       SECTION HEADER
+    ========================== */
+
+    .section-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin:0 40px 30px;
+    }
+
+    .section-header h2{
+      font-size:40px;
+      color:#1f1f1f;
+    }
+
+    .view-all{
+      color:#1ea37d;
+      text-decoration:none;
+      font-weight:bold;
+      font-size:18px;
+    }
+
+    /* =========================
+       CARD SECTION
+    ========================== */
+
+    .cards{
+      display:flex;
+      gap:25px;
+      padding:0 40px 50px;
+      flex-wrap:wrap;
+    }
+
+    .card{
+      background:white;
+      border-radius:20px;
+      overflow:hidden;
+      width:330px;
+      box-shadow:0 3px 10px rgba(0,0,0,0.08);
+      border:1px solid #e4e4e4;
+    }
+
+    /* ===================================
+       CARD TOP IMAGE SECTION
+       IMPORTANT NOTE:
+       CHANGE IMAGE ONLY HERE
+       YOU DO NOT NEED TO CHANGE CODE
+    ==================================== */
+
+    .card-header{
+      height:170px;
+      background-size:cover;
+      background-position:center;
+      padding:20px;
+      color:white;
+      position:relative;
+    }
+
+    /* ===================================
+       IMAGE 1
+       TO CHANGE IMAGE:
+       ONLY CHANGE URL BELOW
+    ==================================== */
+
+    .img1{
+      background-image:url("https://images.unsplash.com/photo-1501785888041-af3ef285b470");
+    }
+
+    /* ===================================
+       IMAGE 2
+       TO CHANGE IMAGE:
+       ONLY CHANGE URL BELOW
+    ==================================== */
+
+    .img2{
+      background-image:url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e");
+    }
+
+    /* ===================================
+       IMAGE 3
+       TO CHANGE IMAGE:
+       ONLY CHANGE URL BELOW
+    ==================================== */
+
+    .img3{
+      background-image:url("https://images.unsplash.com/photo-1519046904884-53103b34b206");
+    }
+
+    .badge{
+      position:absolute;
+      top:20px;
+      right:20px;
+      background:white;
+      color:#333;
+      padding:6px 14px;
+      border-radius:30px;
+      font-size:14px;
+      font-weight:bold;
+    }
+
+    .card-header h3{
+      font-size:32px;
+      margin-top:70px;
+      margin-bottom:10px;
+    }
+
+    .date{
+      font-size:18px;
+    }
+
+    /* =========================
+       CARD BODY
+    ========================== */
+
+    .card-body{
+      padding:25px;
+    }
+
+    .members{
+      font-size:18px;
+      margin-bottom:20px;
+      font-weight:bold;
+    }
+
+    .info{
+      color:#666;
+      margin-bottom:15px;
+      font-size:16px;
+    }
+
+    .description{
+      color:#444;
+      line-height:1.6;
+      margin-bottom:25px;
+      font-size:16px;
+    }
+
+    /* =========================
+       BUTTONS
+    ========================== */
+
+    .buttons{
+      display:flex;
+      gap:15px;
+    }
+
+    .details-btn{
+      flex:1;
+      padding:15px;
+      border:2px solid #1ea37d;
+      background:white;
+      color:#1ea37d;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:bold;
+      font-size:16px;
+    }
+
+    .join-btn{
+      flex:1;
+      padding:15px;
+      border:none;
+      background:#1ea37d;
+      color:white;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:bold;
+      font-size:16px;
+    }
+
+    .join-btn:hover{
+      background:#157f62;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media(max-width:1000px){
+
+      .cards{
+        justify-content:center;
+      }
+
+      .hero h1{
+        font-size:40px;
+      }
+
+      .section-header h2{
+        font-size:32px;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- =========================
+         HERO SECTION
+    ========================== -->
+
+    <div class="hero">
+
+      <h1>Find Travel Groups</h1>
+
+      <p>
+        Connect with fellow travelers heading to your dream destination
+      </p>
+
+      <!-- =========================
+           SEARCH BAR
+      ========================== -->
+
+      <div class="search-bar">
+
+        <input
+          type="text"
+          placeholder="Search destination or group..."
+          class="search-input"
+        >
+
+        <select>
+          <option>Any Date</option>
+        </select>
+
+        <select>
+          <option>Any Size</option>
+        </select>
+
+        <button class="search-btn">
+          Search
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- =========================
+         CREATE GROUP BOX
+    ========================== -->
+
+    <div class="create-group">
+
+      <div class="plus">+</div>
+
+      <h2>Create a Travel Group</h2>
+
+      <p>
+        Can't find a group? Create your own and invite travelers heading the same way
+      </p>
+
+    </div>
+
+    <!-- =========================
+         SECTION TITLE
+    ========================== -->
+
+    <div class="section-header">
+
+      <h2>Active Groups Near You</h2>
+
+      <a href="#" class="view-all">
+        View all →
+      </a>
+
+    </div>
+
+    <!-- =========================
+         CARDS SECTION
+    ========================== -->
+
+    <div class="cards">
+
+      <!-- =========================
+           CARD 1
+      ========================== -->
+
+      <div class="card">
+
+        <div class="card-header img1">
+
+          <div class="badge">Open</div>
+
+          <h3>Manali Trek</h3>
+
+          <div class="date">
+            Dec 20 - Dec 28, 2025
+          </div>
+
+        </div>
+
+        <div class="card-body">
+
+          <div class="members">
+            5/8 members joined
+          </div>
+
+          <div class="info">
+            Adventure • ₹8,500/person
+          </div>
+
+          <div class="info">
+            8 days
+          </div>
+
+          <div class="description">
+            Trekking Manali to Hampta Pass.
+            Looking for adventure lovers
+            who enjoy hiking and camping
+            under the stars.
+          </div>
+
+          <div class="buttons">
+
+            <button class="details-btn">
+              View Details
+            </button>
+
+            <button class="join-btn">
+              Join
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- =========================
+           CARD 2
+      ========================== -->
+
+      <div class="card">
+
+        <div class="card-header img2">
+
+          <div class="badge">2 Left</div>
+
+          <h3>Kerala Backwaters</h3>
+
+          <div class="date">
+            Jan 5 - Jan 10, 2026
+          </div>
+
+        </div>
+
+        <div class="card-body">
+
+          <div class="members">
+            3/5 members joined
+          </div>
+
+          <div class="info">
+            Nature • ₹14,000/person
+          </div>
+
+          <div class="info">
+            5 days
+          </div>
+
+          <div class="description">
+            Houseboat stay, Ayurveda spa,
+            backwater cruises. Perfect for
+            peace and authentic Kerala food lovers.
+          </div>
+
+          <div class="buttons">
+
+            <button class="details-btn">
+              View Details
+            </button>
+
+            <button class="join-btn">
+              Join
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- =========================
+           CARD 3
+      ========================== -->
+
+      <div class="card">
+
+        <div class="card-header img3">
+
+          <div class="badge">Popular</div>
+
+          <h3>Goa NYE Trip</h3>
+
+          <div class="date">
+            Dec 31 - Jan 3, 2026
+          </div>
+
+        </div>
+
+        <div class="card-body">
+
+          <div class="members">
+            8/12 members joined
+          </div>
+
+          <div class="info">
+            Party • ₹10,000/person
+          </div>
+
+          <div class="info">
+            4 days
+          </div>
+
+          <div class="description">
+            New Year celebration in Goa!
+            Beach parties, water sports,
+            and sunset cruises.
+          </div>
+
+          <div class="buttons">
+
+            <button class="details-btn">
+              View Details
+            </button>
+
+            <button class="join-btn">
+              Join
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
