@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dynamic Travel Planner</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial;
+}
+
+body{
+    background:#f4f7f6;
+    padding:30px;
+}
+
+.container{
+    max-width:1300px;
+    margin:auto;
+    display:flex;
+    gap:30px;
+}
+
+.left{
+    width:40%;
+    background:white;
+    padding:30px;
+    border-radius:20px;
+}
+
+.right{
+    width:60%;
+}
+
+.title{
+    font-size:45px;
+    font-weight:bold;
+}
+
+.subtitle{
+    color:gray;
+    margin-top:10px;
+    margin-bottom:30px;
+}
+
+.label{
+    margin-top:25px;
+    margin-bottom:10px;
+    display:block;
+    font-weight:bold;
+}
+
+.input,
+select{
+    width:100%;
+    padding:15px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    font-size:18px;
+}
+
+.traveler-boxes{
+    display:flex;
+    gap:15px;
+    margin-top:20px;
+    flex-wrap:wrap;
+}
+
+.traveler-card{
+    flex:1;
+    min-width:100px;
+    border:1px solid #ccc;
+    border-radius:12px;
+    padding:20px;
+    text-align:center;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.active-card{
+    border:2px solid #14b387;
+    background:#ebfffa;
+}
+
+.emoji{
+    font-size:30px;
+    margin-bottom:10px;
+}
+
+.generate-btn{
+    width:100%;
+    margin-top:30px;
+    padding:20px;
+    border:none;
+    background:#14b387;
+    color:white;
+    border-radius:12px;
+    font-size:20px;
+    cursor:pointer;
+}
+
+.summary{
+
+    background-size:cover;
+    background-position:center;
+    padding:30px;
+    border-radius:20px;
+    color:white;
+    position:relative;
+    overflow:hidden;
+    transition:0.5s;
+}
+
+.summary::before{
+    content:"";
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    background:rgba(0,0,0,0.55);
+}
+
+.summary-content{
+    position:relative;
+    z-index:2;
+}
+
+.budget-grid{
+    display:flex;
+    justify-content:space-between;
+    margin-top:20px;
+    flex-wrap:wrap;
+    gap:20px;
+}
+
+.budget-item p{
+    font-size:28px;
+    font-weight:bold;
+}
+
+.itinerary{
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    margin-top:30px;
+}
+
+.city-title{
+    font-size:35px;
+    font-weight:bold;
+    line-height:50px;
+}
+
+.date-text{
+    margin-top:10px;
+    color:gray;
+    font-size:18px;
+}
+
+.timeline{
+    margin-top:30px;
+}
+
+.activity{
+    margin-top:30px;
+    border-top:1px solid #eee;
+    padding-top:20px;
+}
+
+.activity-title{
+    font-size:28px;
+    font-weight:bold;
+}
+
+.tag{
+    display:inline-block;
+    padding:8px 14px;
+    background:#e6fff8;
+    color:#14b387;
+    border-radius:20px;
+    margin-top:10px;
+    margin-right:10px;
+    font-weight:bold;
+}
+
+@media(max-width:1000px){
+
+    .container{
+        flex-direction:column;
+    }
+
+    .left,
+    .right{
+        width:100%;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LEFT PANEL -->
+
+    <div class="left">
+
+        <div class="title">
+            Plan Your Trip
+        </div>
+
+        <div class="subtitle">
+            Build your smart travel itinerary
+        </div>
+
+        <!-- DESTINATION -->
+
+        <label class="label">
+            Select Destination
+        </label>
+
+        <select id="destinationSelect"
+                onchange="changeDestination()">
+
+            <option value="india">
+                India
+            </option>
+
+            <option value="maldives">
+                Maldives
+            </option>
+
+            <option value="singapore">
+                Singapore
+            </option>
+
+            <option value="thailand">
+                Thailand
+            </option>
+
+            <option value="nepal">
+                Nepal
+            </option>
+
+        </select>
+
+        <!-- START DATE -->
+
+        <label class="label">
+            Travel Date
+        </label>
+
+        <input type="date"
+               class="input"
+               id="travelDate">
+
+        <!-- RETURN DATE -->
+
+        <label class="label">
+            Return Date
+        </label>
+
+        <input type="date"
+               class="input"
+               id="returnDate">
+
+        <!-- TRAVELERS -->
+
+        <label class="label">
+            Traveler Type
+        </label>
+
+        <div class="traveler-boxes">
+
+            <div class="traveler-card active-card"
+                 onclick="changeTraveler('solo', this)">
+
+                <div class="emoji">🧍</div>
+
+                Solo
+
+            </div>
+
+            <div class="traveler-card"
+                 onclick="changeTraveler('couple', this)">
+
+                <div class="emoji">👫</div>
+
+                Couple
+
+            </div>
+
+            <div class="traveler-card"
+                 onclick="changeTraveler('family', this)">
+
+                <div class="emoji">👨‍👩‍👧</div>
+
+                Family
+
+            </div>
+
+            <div class="traveler-card"
+                 onclick="changeTraveler('group', this)">
+
+                <div class="emoji">👥</div>
+
+                Group
+
+            </div>
+
+        </div>
+
+        <button class="generate-btn">
+            Generate Trip
+        </button>
+
+    </div>
+
+    <!-- RIGHT PANEL -->
+
+    <div class="right">
+
+        <!-- SUMMARY -->
+
+        <div class="summary" id="summaryBox">
+
+            <div class="summary-content">
+
+                <h1>
+                    Budget Summary
+                </h1>
+
+                <div class="budget-grid">
+
+                    <div class="budget-item">
+
+                        <h3>Transport</h3>
+
+                        <p id="transportPrice">
+                            ₹0
+                        </p>
+
+                    </div>
+
+                    <div class="budget-item">
+
+                        <h3>Hotel</h3>
+
+                        <p id="hotelPrice">
+                            ₹0
+                        </p>
+
+                    </div>
+
+                    <div class="budget-item">
+
+                        <h3>Activities</h3>
+
+                        <p id="activityPrice">
+                            ₹0
+                        </p>
+
+                    </div>
+
+                    <div class="budget-item">
+
+                        <h3>Food</h3>
+
+                        <p id="foodPrice">
+                            ₹0
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ITINERARY -->
+
+        <div class="itinerary">
+
+            <div class="city-title"
+                 id="cityTitle">
+
+            </div>
+
+            <div class="date-text"
+                 id="dateText">
+
+                Select Date
+
+            </div>
+
+            <div class="timeline">
+
+                <div class="activity">
+
+                    <div class="activity-title"
+                         id="act1">
+
+                    </div>
+
+                </div>
+
+                <div class="activity">
+
+                    <div class="activity-title"
+                         id="act2">
+
+                    </div>
+
+                </div>
+
+                <div class="activity">
+
+                    <div class="activity-title"
+                         id="act3">
+
+                    </div>
+
+                </div>
+
+                <!-- ACTIVITIES TAGS -->
+
+                <div id="activitiesBox">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+window.onload = function () {
+
+    let currentTraveler = "solo";
+
+    /* =====================================
+       DESTINATION DATA
+    ====================================== */
+
+    const destinationData = {
+
+        india: {
+
+            cities:
+            "Jaipur • Gulmarg • Goa • Kashmir • Udaipur • Manali • Leh Ladakh",
+
+            activities: [
+                "Paragliding",
+                "Camel Safari",
+                "Temple Visit",
+                "House Boat Ride",
+                "Mountain Trekking",
+                "River Rafting"
+            ],
+
+            act1: "Royal Hotel Check-in",
+
+            act2: "Jaipur Fort Visit",
+
+            act3: "Mountain Adventure",
+
+            image:
+            "https://images.unsplash.com/photo-1524492412937-b28074a5d7da"
+
+        },
+
+        maldives: {
+
+            cities:
+            "Male • Vaadhoo • Addu • Hulhumale • Maafushi • Fulhadhoo • Biyadhoo",
+
+            activities: [
+                "Scuba Diving",
+                "Luxury Spa",
+                "Jet Ski",
+                "Private Beach Dinner",
+                "Island Hopping",
+                "Snorkeling"
+            ],
+
+            act1: "Water Villa Check-in",
+
+            act2: "Luxury Island Tour",
+
+            act3: "Private Beach Dinner",
+
+            image:
+            "https://images.unsplash.com/photo-1514282401047-d79a71a590e8"
+
+        },
+
+        singapore: {
+
+            cities:
+            "Marina Bay • Sentosa • Chinatown • Orchard Road • Clarke Quay • Jurong • Little India",
+
+            activities: [
+                "Universal Studios",
+                "Night Safari",
+                "SkyPark Visit",
+                "Cruise Tour",
+                "Shopping Festival",
+                "Gardens Visit"
+            ],
+
+            act1: "Luxury Hotel Check-in",
+
+            act2: "Marina Bay Sands Tour",
+
+            act3: "Sentosa Adventure",
+
+            image:
+            "https://images.unsplash.com/photo-1525625293386-3f8f99389edd"
+
+        },
+
+        thailand: {
+
+            cities:
+            "Bangkok • Phuket • Krabi • Pattaya • Chiang Mai • Koh Samui • Phi Phi Island",
+
+            activities: [
+                "Boat Party",
+                "Thai Spa",
+                "Night Market",
+                "Island Tour",
+                "Beach Adventure",
+                "Floating Market"
+            ],
+
+            act1: "Beach Resort Check-in",
+
+            act2: "Island Tour",
+
+            act3: "Bangkok Nightlife",
+
+            image:
+            "https://images.unsplash.com/photo-1508009603885-50cf7c579365"
+
+        },
+
+        nepal: {
+
+            cities:
+            "Kathmandu • Pokhara • Lumbini • Bhaktapur • Nagarkot • Chitwan • Everest Region",
+
+            activities: [
+                "Mountain Trekking",
+                "Temple Visit",
+                "Boating",
+                "Everest Flight",
+                "Jungle Safari",
+                "Camping"
+            ],
+
+            act1: "Mountain Resort Check-in",
+
+            act2: "Everest Scenic Tour",
+
+            act3: "Pokhara Adventure",
+
+            image:
+            "https://images.unsplash.com/photo-1544735716-392fe2489ffa"
+
+        }
+
+    };
+
+    /* =====================================
+       BUDGET DATA
+    ====================================== */
+
+    const budgetData = {
+
+        india: {
+
+            solo:{
+                transport:"₹4,000",
+                hotel:"₹8,000",
+                activity:"₹3,000",
+                food:"₹2,000"
+            },
+
+            couple:{
+                transport:"₹8,000",
+                hotel:"₹15,000",
+                activity:"₹6,000",
+                food:"₹5,000"
+            },
+
+            family:{
+                transport:"₹18,000",
+                hotel:"₹28,000",
+                activity:"₹10,000",
+                food:"₹12,000"
+            },
+
+            group:{
+                transport:"₹25,000",
+                hotel:"₹40,000",
+                activity:"₹18,000",
+                food:"₹15,000"
+            }
+
+        },
+
+        maldives: {
+
+            solo:{
+                transport:"₹18,000",
+                hotel:"₹35,000",
+                activity:"₹12,000",
+                food:"₹10,000"
+            },
+
+            couple:{
+                transport:"₹35,000",
+                hotel:"₹70,000",
+                activity:"₹20,000",
+                food:"₹18,000"
+            },
+
+            family:{
+                transport:"₹60,000",
+                hotel:"₹1,20,000",
+                activity:"₹40,000",
+                food:"₹30,000"
+            },
+
+            group:{
+                transport:"₹90,000",
+                hotel:"₹1,80,000",
+                activity:"₹60,000",
+                food:"₹45,000"
+            }
+
+        },
+
+        singapore: {
+
+            solo:{
+                transport:"₹25,000",
+                hotel:"₹45,000",
+                activity:"₹18,000",
+                food:"₹12,000"
+            },
+
+            couple:{
+                transport:"₹45,000",
+                hotel:"₹80,000",
+                activity:"₹30,000",
+                food:"₹22,000"
+            },
+
+            family:{
+                transport:"₹85,000",
+                hotel:"₹1,40,000",
+                activity:"₹55,000",
+                food:"₹40,000"
+            },
+
+            group:{
+                transport:"₹1,20,000",
+                hotel:"₹2,00,000",
+                activity:"₹80,000",
+                food:"₹65,000"
+            }
+
+        },
+
+        thailand: {
+
+            solo:{
+                transport:"₹10,000",
+                hotel:"₹20,000",
+                activity:"₹8,000",
+                food:"₹5,000"
+            },
+
+            couple:{
+                transport:"₹20,000",
+                hotel:"₹40,000",
+                activity:"₹15,000",
+                food:"₹10,000"
+            },
+
+            family:{
+                transport:"₹45,000",
+                hotel:"₹75,000",
+                activity:"₹30,000",
+                food:"₹20,000"
+            },
+
+            group:{
+                transport:"₹70,000",
+                hotel:"₹1,20,000",
+                activity:"₹50,000",
+                food:"₹35,000"
+            }
+
+        },
+
+        nepal: {
+
+            solo:{
+                transport:"₹8,000",
+                hotel:"₹15,000",
+                activity:"₹6,000",
+                food:"₹4,000"
+            },
+
+            couple:{
+                transport:"₹16,000",
+                hotel:"₹28,000",
+                activity:"₹12,000",
+                food:"₹8,000"
+            },
+
+            family:{
+                transport:"₹35,000",
+                hotel:"₹55,000",
+                activity:"₹22,000",
+                food:"₹18,000"
+            },
+
+            group:{
+                transport:"₹50,000",
+                hotel:"₹80,000",
+                activity:"₹35,000",
+                food:"₹28,000"
+            }
+
+        }
+
+    };
+
+    /* =====================================
+       CHANGE TRAVELER
+    ====================================== */
+
+    window.changeTraveler = function(type, element){
+
+        currentTraveler = type;
+
+        const cards =
+        document.querySelectorAll(".traveler-card");
+
+        cards.forEach(card => {
+
+            card.classList.remove("active-card");
+
+        });
+
+        element.classList.add("active-card");
+
+        updateBudget();
+
+    };
+
+    /* =====================================
+       UPDATE BUDGET
+    ====================================== */
+
+    function updateBudget(){
+
+        const destination =
+        document.getElementById("destinationSelect").value;
+
+        const data =
+        budgetData[destination][currentTraveler];
+
+        document.getElementById("transportPrice")
+        .innerText = data.transport;
+
+        document.getElementById("hotelPrice")
+        .innerText = data.hotel;
+
+        document.getElementById("activityPrice")
+        .innerText = data.activity;
+
+        document.getElementById("foodPrice")
+        .innerText = data.food;
+
+    }
+
+    /* =====================================
+       CHANGE DESTINATION
+    ====================================== */
+
+    window.changeDestination = function(){
+
+        const destination =
+        document.getElementById("destinationSelect").value;
+
+        const data =
+        destinationData[destination];
+
+        document.getElementById("cityTitle")
+        .innerText = data.cities;
+
+        document.getElementById("act1")
+        .innerText = data.act1;
+
+        document.getElementById("act2")
+        .innerText = data.act2;
+
+        document.getElementById("act3")
+        .innerText = data.act3;
+
+        /* CHANGE BACKGROUND IMAGE */
+
+        document.getElementById("summaryBox")
+        .style.backgroundImage =
+        `url('${data.image}')`;
+
+        let tagsHTML = "";
+
+        data.activities.forEach(activity => {
+
+            tagsHTML +=
+            `<div class="tag">${activity}</div>`;
+
+        });
+
+        document.getElementById("activitiesBox")
+        .innerHTML = tagsHTML;
+
+        updateBudget();
+
+    };
+
+    /* =====================================
+       DATE CHANGE
+    ====================================== */
+
+    const travelDate =
+    document.getElementById("travelDate");
+
+    const returnDate =
+    document.getElementById("returnDate");
+
+    function updateDateText(){
+
+        const start =
+        travelDate.value;
+
+        const end =
+        returnDate.value;
+
+        if(start && end){
+
+            document.getElementById("dateText")
+            .innerText =
+            "From " + start + " To " + end;
+
+        }
+
+    }
+
+    travelDate.addEventListener(
+        "change",
+        updateDateText
+    );
+
+    returnDate.addEventListener(
+        "change",
+        updateDateText
+    );
+
+    /* =====================================
+       INITIAL LOAD
+    ====================================== */
+
+    changeDestination();
+
+};
+
+</script>
+
+</body>
+</html>

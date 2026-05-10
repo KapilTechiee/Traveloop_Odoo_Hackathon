@@ -1,569 +1,749 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Travel Groups</title>
 
-  <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dynamic Travel Groups</title>
 
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family: Arial, sans-serif;
-    }
+<style>
 
-    body{
-      background:#f3f5f4;
-      padding:20px;
-    }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
 
-    .container{
-      max-width:1200px;
-      margin:auto;
-      background:white;
-      border-radius:20px;
-      overflow:hidden;
-      box-shadow:0 0 10px rgba(0,0,0,0.1);
-    }
+body{
+  background:#f3f5f4;
+  padding:20px;
+}
 
-    /* =========================
-       TOP HEADER SECTION
-    ========================== */
+.container{
+  max-width:1300px;
+  margin:auto;
+  background:white;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
 
-    .hero{
-      background:linear-gradient(135deg,#052d25,#0a6b5f);
-      padding:40px 50px;
-      color:white;
-      position:relative;
-    }
+/* =============================================
+   HERO SECTION
+   Natural landscape background image is set here.
+   The dark green gradient overlays the image for
+   readability of text on top.
 
-    .hero h1{
-      font-size:52px;
-      margin-bottom:10px;
-      font-weight:bold;
-    }
+   ✏️  TO CHANGE THE BACKGROUND IMAGE:
+       Find the .hero rule below and change the URL
+       inside background-image to any image URL.
+       Example:
+         background-image: url('https://your-image-url.jpg');
+       Keep the gradient overlay so text stays readable.
+============================================= */
+.hero{
+  position: relative;
+  padding:40px 50px;
+  color:white;
+  overflow: hidden;
 
-    .hero p{
-      font-size:18px;
-      margin-bottom:30px;
-      color:#d8e8e2;
-    }
+  /* ✏️  HERO BACKGROUND IMAGE — change this URL to update the background */
+  background-image: url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1400&q=80');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
-    /* =========================
-       SEARCH BAR SECTION
-    ========================== */
+/* Dark green gradient overlay on top of the image
+   so that title and search text are readable */
+.hero::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background: linear-gradient(135deg,
+    rgba(5, 45, 37, 0.88) 0%,
+    rgba(10, 107, 95, 0.75) 100%
+  );
+  z-index:0;
+}
 
-    .search-bar{
-      display:flex;
-      gap:15px;
-      flex-wrap:wrap;
-    }
+/* All hero children sit above the overlay */
+.hero > *{
+  position: relative;
+  z-index: 1;
+}
 
-    .search-bar input,
-    .search-bar select{
-      padding:18px;
-      border:none;
-      border-radius:12px;
-      font-size:16px;
-      outline:none;
-    }
+.hero h1{
+  font-size:52px;
+  margin-bottom:10px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
 
-    .search-input{
-      flex:1;
-      min-width:300px;
-    }
+.hero p{
+  color:#d6ebe4;
+  font-size:18px;
+  margin-bottom:30px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
 
-    .search-btn{
-      background:#1db287;
-      color:white;
-      border:none;
-      padding:18px 30px;
-      border-radius:12px;
-      font-size:16px;
-      cursor:pointer;
-      font-weight:bold;
-    }
+/* SEARCH */
 
-    .search-btn:hover{
-      background:#14926e;
-    }
+.search-bar{
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+}
 
-    /* =========================
-       CREATE GROUP BOX
-    ========================== */
+.search-input,
+.search-select{
+  padding:18px;
+  border:none;
+  border-radius:12px;
+  font-size:16px;
+  outline:none;
+}
 
-    .create-group{
-      margin:40px;
-      border:2px dashed #4fa48d;
-      border-radius:20px;
-      text-align:center;
-      padding:40px;
-      background:#f9fdfb;
-    }
+.search-input{
+  flex:1;
+  min-width:250px;
+}
 
-    .plus{
-      font-size:50px;
-      color:#1ea37d;
-      margin-bottom:10px;
-    }
+.search-btn{
+  background:#1db287;
+  color:white;
+  border:none;
+  padding:18px 30px;
+  border-radius:12px;
+  cursor:pointer;
+  font-size:16px;
+  font-weight:bold;
+}
 
-    .create-group h2{
-      color:#0e6a58;
-      margin-bottom:10px;
-      font-size:32px;
-    }
+.search-btn:hover{
+  background:#158f6c;
+}
 
-    .create-group p{
-      color:#666;
-      font-size:18px;
-    }
+/* CREATE GROUP */
 
-    /* =========================
-       SECTION HEADER
-    ========================== */
+.create-group{
+  margin:40px;
+  padding:35px;
+  border-radius:20px;
+  border:2px dashed #1ea37d;
+  background:#f8fffc;
+}
 
-    .section-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin:0 40px 30px;
-    }
+.create-group h2{
+  font-size:35px;
+  color:#115948;
+  margin-bottom:10px;
+}
 
-    .section-header h2{
-      font-size:40px;
-      color:#1f1f1f;
-    }
+.create-group p{
+  color:#666;
+  margin-bottom:25px;
+}
 
-    .view-all{
-      color:#1ea37d;
-      text-decoration:none;
-      font-weight:bold;
-      font-size:18px;
-    }
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
 
-    /* =========================
-       CARD SECTION
-    ========================== */
+.form-grid input,
+.form-grid select,
+.form-grid textarea{
+  width:100%;
+  padding:15px;
+  border-radius:12px;
+  border:1px solid #ccc;
+  font-size:16px;
+}
 
-    .cards{
-      display:flex;
-      gap:25px;
-      padding:0 40px 50px;
-      flex-wrap:wrap;
-    }
+.form-grid textarea{
+  resize:none;
+  height:120px;
+}
 
-    .card{
-      background:white;
-      border-radius:20px;
-      overflow:hidden;
-      width:330px;
-      box-shadow:0 3px 10px rgba(0,0,0,0.08);
-      border:1px solid #e4e4e4;
-    }
+.full-width{
+  grid-column:1/3;
+}
 
-    /* ===================================
-       CARD TOP IMAGE SECTION
-       IMPORTANT NOTE:
-       CHANGE IMAGE ONLY HERE
-       YOU DO NOT NEED TO CHANGE CODE
-    ==================================== */
+.create-btn{
+  margin-top:20px;
+  width:100%;
+  padding:18px;
+  border:none;
+  background:#1ea37d;
+  color:white;
+  border-radius:12px;
+  font-size:18px;
+  cursor:pointer;
+  font-weight:bold;
+}
 
-    .card-header{
-      height:170px;
-      background-size:cover;
-      background-position:center;
-      padding:20px;
-      color:white;
-      position:relative;
-    }
+.create-btn:hover{
+  background:#15795d;
+}
 
-    /* ===================================
-       IMAGE 1
-       TO CHANGE IMAGE:
-       ONLY CHANGE URL BELOW
-    ==================================== */
+/* SECTION */
 
-    .img1{
-      background-image:url("https://images.unsplash.com/photo-1501785888041-af3ef285b470");
-    }
+.section-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:0 40px 30px;
+}
 
-    /* ===================================
-       IMAGE 2
-       TO CHANGE IMAGE:
-       ONLY CHANGE URL BELOW
-    ==================================== */
+.section-header h2{
+  font-size:40px;
+}
 
-    .img2{
-      background-image:url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e");
-    }
+/* =============================================
+   DESTINATION CARDS
+   Each card has a background image set via
+   inline style="background-image:url('...')"
+   in the JavaScript displayGroups() function.
 
-    /* ===================================
-       IMAGE 3
-       TO CHANGE IMAGE:
-       ONLY CHANGE URL BELOW
-    ==================================== */
+   ✏️  TO CHANGE A CARD'S IMAGE:
+       Scroll down to the `groups` array in the
+       <script> section and find the group by name.
+       Change the `image` property URL.
+       Example:
+         image: "https://new-image-url.jpg"
 
-    .img3{
-      background-image:url("https://images.unsplash.com/photo-1519046904884-53103b34b206");
-    }
+       Unsplash URLs used here — append ?w=600&q=80
+       for fast loading.
+============================================= */
+.cards{
+  display:flex;
+  gap:25px;
+  padding:0 40px 50px;
+  flex-wrap:wrap;
+}
 
-    .badge{
-      position:absolute;
-      top:20px;
-      right:20px;
-      background:white;
-      color:#333;
-      padding:6px 14px;
-      border-radius:30px;
-      font-size:14px;
-      font-weight:bold;
-    }
+.card{
+  width:340px;
+  background:white;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 3px 10px rgba(0,0,0,0.08);
+  border:1px solid #e7e7e7;
+}
 
-    .card-header h3{
-      font-size:32px;
-      margin-top:70px;
-      margin-bottom:10px;
-    }
+.card-header{
+  height:200px;
+  background-size:cover;
+  background-position:center;
+  position:relative;
+  padding:20px;
+  color:white;
+}
 
-    .date{
-      font-size:18px;
-    }
+/* Gradient overlay on card images so text is readable */
+.card-header::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background: linear-gradient(to top,
+    rgba(0,0,0,0.65) 0%,
+    rgba(0,0,0,0.05) 60%
+  );
+  z-index:0;
+}
 
-    /* =========================
-       CARD BODY
-    ========================== */
+.card-header > *{
+  position: relative;
+  z-index: 1;
+}
 
-    .card-body{
-      padding:25px;
-    }
+.badge{
+  position:absolute;
+  top:20px;
+  right:20px;
+  background:white;
+  color:#333;
+  padding:7px 14px;
+  border-radius:30px;
+  font-size:14px;
+  font-weight:bold;
+  z-index:1;
+}
 
-    .members{
-      font-size:18px;
-      margin-bottom:20px;
-      font-weight:bold;
-    }
+.card-header h3{
+  margin-top:95px;
+  font-size:30px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
 
-    .info{
-      color:#666;
-      margin-bottom:15px;
-      font-size:16px;
-    }
+.date{
+  margin-top:10px;
+  font-size:16px;
+}
 
-    .description{
-      color:#444;
-      line-height:1.6;
-      margin-bottom:25px;
-      font-size:16px;
-    }
+.card-body{
+  padding:25px;
+}
 
-    /* =========================
-       BUTTONS
-    ========================== */
+.members{
+  font-size:18px;
+  font-weight:bold;
+  margin-bottom:15px;
+}
 
-    .buttons{
-      display:flex;
-      gap:15px;
-    }
+.info{
+  color:#666;
+  margin-bottom:10px;
+}
 
-    .details-btn{
-      flex:1;
-      padding:15px;
-      border:2px solid #1ea37d;
-      background:white;
-      color:#1ea37d;
-      border-radius:12px;
-      cursor:pointer;
-      font-weight:bold;
-      font-size:16px;
-    }
+.description{
+  margin-top:15px;
+  line-height:1.6;
+  color:#444;
+}
 
-    .join-btn{
-      flex:1;
-      padding:15px;
-      border:none;
-      background:#1ea37d;
-      color:white;
-      border-radius:12px;
-      cursor:pointer;
-      font-weight:bold;
-      font-size:16px;
-    }
+.buttons{
+  display:flex;
+  gap:15px;
+  margin-top:25px;
+}
 
-    .join-btn:hover{
-      background:#157f62;
-    }
+.details-btn,
+.join-btn{
+  flex:1;
+  padding:15px;
+  border-radius:12px;
+  cursor:pointer;
+  font-size:16px;
+  font-weight:bold;
+}
 
-    /* =========================
-       RESPONSIVE
-    ========================== */
+.details-btn{
+  background:white;
+  border:2px solid #1ea37d;
+  color:#1ea37d;
+}
 
-    @media(max-width:1000px){
+.join-btn{
+  border:none;
+  background:#1ea37d;
+  color:white;
+}
 
-      .cards{
-        justify-content:center;
-      }
+.join-btn:hover{
+  background:#167a5f;
+}
 
-      .hero h1{
-        font-size:40px;
-      }
+@media(max-width:1000px){
 
-      .section-header h2{
-        font-size:32px;
-      }
+  .cards{
+    justify-content:center;
+  }
 
-    }
+  .form-grid{
+    grid-template-columns:1fr;
+  }
 
-  </style>
+  .full-width{
+    grid-column:auto;
+  }
+
+  .hero h1{
+    font-size:38px;
+  }
+
+}
+
+</style>
+
 </head>
 
 <body>
 
-  <div class="container">
-
-    <!-- =========================
-         HERO SECTION
-    ========================== -->
-
-    <div class="hero">
-
-      <h1>Find Travel Groups</h1>
-
-      <p>
-        Connect with fellow travelers heading to your dream destination
-      </p>
-
-      <!-- =========================
-           SEARCH BAR
-      ========================== -->
-
-      <div class="search-bar">
-
-        <input
-          type="text"
-          placeholder="Search destination or group..."
-          class="search-input"
-        >
-
-        <select>
-          <option>Any Date</option>
-        </select>
-
-        <select>
-          <option>Any Size</option>
-        </select>
-
-        <button class="search-btn">
-          Search
-        </button>
-
-      </div>
-
-    </div>
-
-    <!-- =========================
-         CREATE GROUP BOX
-    ========================== -->
-
-    <div class="create-group">
-
-      <div class="plus">+</div>
-
-      <h2>Create a Travel Group</h2>
-
-      <p>
-        Can't find a group? Create your own and invite travelers heading the same way
-      </p>
-
-    </div>
-
-    <!-- =========================
-         SECTION TITLE
-    ========================== -->
-
-    <div class="section-header">
-
-      <h2>Active Groups Near You</h2>
-
-      <a href="#" class="view-all">
-        View all →
-      </a>
-
-    </div>
-
-    <!-- =========================
-         CARDS SECTION
-    ========================== -->
-
-    <div class="cards">
-
-      <!-- =========================
-           CARD 1
-      ========================== -->
-
-      <div class="card">
-
-        <div class="card-header img1">
-
-          <div class="badge">Open</div>
-
-          <h3>Manali Trek</h3>
-
-          <div class="date">
-            Dec 20 - Dec 28, 2025
-          </div>
-
-        </div>
-
-        <div class="card-body">
-
-          <div class="members">
-            5/8 members joined
-          </div>
-
-          <div class="info">
-            Adventure • ₹8,500/person
-          </div>
-
-          <div class="info">
-            8 days
-          </div>
-
-          <div class="description">
-            Trekking Manali to Hampta Pass.
-            Looking for adventure lovers
-            who enjoy hiking and camping
-            under the stars.
-          </div>
-
-          <div class="buttons">
-
-            <button class="details-btn">
-              View Details
-            </button>
-
-            <button class="join-btn">
-              Join
-            </button>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- =========================
-           CARD 2
-      ========================== -->
-
-      <div class="card">
-
-        <div class="card-header img2">
-
-          <div class="badge">2 Left</div>
-
-          <h3>Kerala Backwaters</h3>
-
-          <div class="date">
-            Jan 5 - Jan 10, 2026
-          </div>
-
-        </div>
-
-        <div class="card-body">
-
-          <div class="members">
-            3/5 members joined
-          </div>
-
-          <div class="info">
-            Nature • ₹14,000/person
-          </div>
-
-          <div class="info">
-            5 days
-          </div>
-
-          <div class="description">
-            Houseboat stay, Ayurveda spa,
-            backwater cruises. Perfect for
-            peace and authentic Kerala food lovers.
-          </div>
-
-          <div class="buttons">
-
-            <button class="details-btn">
-              View Details
-            </button>
-
-            <button class="join-btn">
-              Join
-            </button>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- =========================
-           CARD 3
-      ========================== -->
-
-      <div class="card">
-
-        <div class="card-header img3">
-
-          <div class="badge">Popular</div>
-
-          <h3>Goa NYE Trip</h3>
-
-          <div class="date">
-            Dec 31 - Jan 3, 2026
-          </div>
-
-        </div>
-
-        <div class="card-body">
-
-          <div class="members">
-            8/12 members joined
-          </div>
-
-          <div class="info">
-            Party • ₹10,000/person
-          </div>
-
-          <div class="info">
-            4 days
-          </div>
-
-          <div class="description">
-            New Year celebration in Goa!
-            Beach parties, water sports,
-            and sunset cruises.
-          </div>
-
-          <div class="buttons">
-
-            <button class="details-btn">
-              View Details
-            </button>
-
-            <button class="join-btn">
-              Join
-            </button>
-
-          </div>
-
-        </div>
-
-      </div>
+<div class="container">
+
+  <!-- =============================================
+       HERO SECTION
+       Background: Natural landscape photo (mountain/forest)
+       with a dark green gradient overlay.
+       ✏️  Change the image URL in CSS .hero { background-image: }
+  ============================================= -->
+  <div class="hero">
+
+    <h1>Find Travel Groups</h1>
+
+    <p>Connect with students and travelers going to the same destination</p>
+
+    <!-- SEARCH BAR -->
+    <div class="search-bar">
+
+      <!-- COUNTRY OPTIONS -->
+      <select id="searchInput" class="search-input">
+        <option value="">Select Country</option>
+        <option value="India">India</option>
+        <option value="Singapore">Singapore</option>
+        <option value="Nepal">Nepal</option>
+        <option value="Thailand">Thailand</option>
+        <option value="Maldives">Maldives</option>
+        <option value="Indonesia">Indonesia</option>
+      </select>
+
+      <input type="date" id="searchDate" class="search-select" value="2026-05-10">
+
+      <input type="number" id="sizeFilter" class="search-select" min="1" max="100" value="1">
+
+      <button class="search-btn" onclick="searchGroups()">Search</button>
 
     </div>
 
   </div>
+
+  <!-- CREATE GROUP FORM -->
+  <div class="create-group">
+
+    <h2>Create Your Own Travel Group</h2>
+    <p>Students from different cities can join your group for the same destination</p>
+
+    <div class="form-grid">
+      <input type="text"   id="groupName"        placeholder="Group Name">
+      <input type="text"   id="destination"      placeholder="Destination / Country">
+      <input type="date"   id="groupStartDate">
+      <input type="date"   id="groupEndDate">
+      <input type="number" id="groupSize"        min="1" max="100" placeholder="Maximum Members">
+      <input type="number" id="groupPrice"       placeholder="Price Per Person">
+      <input type="text"   id="groupType"        placeholder="Adventure / Nature / Party">
+      <textarea id="groupDescription" class="full-width" placeholder="Write group description"></textarea>
+    </div>
+
+    <button class="create-btn" onclick="createGroup()">Create Travel Group</button>
+
+  </div>
+
+  <!-- ACTIVE GROUPS -->
+  <div class="section-header">
+    <h2>Active Groups Near You</h2>
+  </div>
+
+  <!-- =============================================
+       CARDS CONTAINER
+       Cards are generated by JavaScript below.
+       Each card's image comes from the `image`
+       property in the groups array.
+  ============================================= -->
+  <div class="cards" id="cardsContainer"></div>
+
+</div>
+
+<script>
+
+/* =============================================
+   GROUPS DATA ARRAY
+   Each object = one destination card.
+
+   ✏️  TO CHANGE A CARD IMAGE:
+       Find the group by `name` and update `image`.
+       Use any direct image URL ending in .jpg/.png
+       or an Unsplash URL like:
+         "https://images.unsplash.com/photo-XXXX?w=600&q=80"
+
+   ✏️  TO ADD A NEW GROUP:
+       Copy one object, paste at top of array,
+       and fill in all fields.
+============================================= */
+let groups = [
+
+  {
+    name: "Manali Trek",
+    destination: "India",
+    startDate: "2026-05-10",
+    endDate: "2026-05-18",
+    size: 8,
+    joined: 5,
+    type: "Adventure",
+    price: "₹8,500/person",
+    duration: "8 Days",
+    description: "Trekking Manali to Hampta Pass with adventure lovers.",
+    badge: "Open",
+    /* ✏️ Manali — snowy Himalayan mountain image */
+    image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&q=80"
+  },
+
+  {
+    name: "Singapore City Tour",
+    destination: "Singapore",
+    startDate: "2026-06-05",
+    endDate: "2026-06-12",
+    size: 20,
+    joined: 14,
+    type: "Luxury",
+    price: "₹35,000/person",
+    duration: "7 Days",
+    description: "Explore Marina Bay Sands, Sentosa and Universal Studios.",
+    badge: "Popular",
+    /* ✏️ Singapore — city skyline / Marina Bay image */
+    image: "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=600&q=80"
+  },
+
+  {
+    name: "Nepal Adventure",
+    destination: "Nepal",
+    startDate: "2026-07-15",
+    endDate: "2026-07-22",
+    size: 15,
+    joined: 9,
+    type: "Nature",
+    price: "₹18,000/person",
+    duration: "7 Days",
+    description: "Pokhara boating and mountain trekking with students.",
+    badge: "New",
+    /* ✏️ Nepal — Himalayan landscape / Pokhara lake image */
+    image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=600&q=80"
+  },
+
+  {
+    name: "Thailand Beach Party",
+    destination: "Thailand",
+    startDate: "2026-08-02",
+    endDate: "2026-08-08",
+    size: 30,
+    joined: 19,
+    type: "Party",
+    price: "₹28,000/person",
+    duration: "6 Days",
+    description: "Enjoy Phuket beaches, nightlife and island tours.",
+    badge: "Trending",
+    /* ✏️ Thailand — tropical beach / Phuket image */
+    image: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=600&q=80"
+  },
+
+  {
+    name: "Maldives Luxury Stay",
+    destination: "Maldives",
+    startDate: "2026-09-10",
+    endDate: "2026-09-16",
+    size: 10,
+    joined: 7,
+    type: "Luxury",
+    price: "₹55,000/person",
+    duration: "6 Days",
+    description: "Luxury water villa stay and scuba diving experience.",
+    badge: "2 Left",
+    /* ✏️ Maldives — overwater bungalow / turquoise sea image */
+    image: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80"
+  },
+
+  {
+    name: "Bali Indonesia Tour",
+    destination: "Indonesia",
+    startDate: "2026-10-01",
+    endDate: "2026-10-09",
+    size: 25,
+    joined: 12,
+    type: "Adventure",
+    price: "₹32,000/person",
+    duration: "8 Days",
+    description: "Bali temples, beach parties and island hopping fun.",
+    badge: "Open",
+    /* ✏️ Bali — rice terraces / temple image */
+    image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80"
+  }
+
+];
+
+/* DISPLAY CARDS */
+function displayGroups(data){
+
+  const container = document.getElementById("cardsContainer");
+  container.innerHTML = "";
+
+  if(data.length === 0){
+    container.innerHTML = "<h2 style='padding:40px'>No Groups Found</h2>";
+    return;
+  }
+
+  data.forEach(group => {
+
+    container.innerHTML += `
+    <div class="card">
+
+      <!-- Card image: set via inline background-image from group.image -->
+      <div class="card-header"
+           style="background-image:url('${group.image}')">
+
+        <div class="badge">${group.badge}</div>
+        <h3>${group.name}</h3>
+
+      </div>
+
+      <div class="card-body">
+
+        <div class="members">${group.joined}/${group.size} Members Joined</div>
+
+        <div class="info"><b>Destination:</b> ${group.destination}</div>
+        <div class="info"><b>Starting Date:</b> ${group.startDate}</div>
+        <div class="info"><b>Ending Date:</b> ${group.endDate}</div>
+        <div class="info">${group.type} • ${group.price}</div>
+        <div class="info">${group.duration}</div>
+
+        <div class="description">${group.description}</div>
+
+        <div class="buttons">
+          <button class="details-btn" onclick="showDetails('${group.name}')">Details</button>
+          <button class="join-btn"    onclick="joinGroup('${group.name}')">Join</button>
+        </div>
+
+      </div>
+
+    </div>
+    `;
+
+  });
+
+}
+
+/* SEARCH */
+function searchGroups(){
+
+  const searchText  = document.getElementById("searchInput").value.toLowerCase();
+  const selectedDate = document.getElementById("searchDate").value;
+  const sizeFilter  = parseInt(document.getElementById("sizeFilter").value);
+
+  let filtered = groups.filter(group => {
+    let matchesSearch = searchText === "" || group.destination.toLowerCase().includes(searchText);
+    let matchesDate   = selectedDate === "" || group.startDate >= selectedDate;
+    let matchesSize   = group.size >= sizeFilter;
+    return matchesSearch && matchesDate && matchesSize;
+  });
+
+  displayGroups(filtered);
+
+}
+
+/* CREATE GROUP */
+function createGroup(){
+
+  const name        = document.getElementById("groupName").value.trim();
+  const destination = document.getElementById("destination").value.trim();
+  const startDate   = document.getElementById("groupStartDate").value;
+  const endDate     = document.getElementById("groupEndDate").value;
+  const size        = document.getElementById("groupSize").value;
+  const price       = document.getElementById("groupPrice").value;
+  const type        = document.getElementById("groupType").value.trim();
+  const description = document.getElementById("groupDescription").value.trim();
+
+  if(!name || !destination || !startDate || !endDate || !size || !price || !type || !description){
+    alert("Please fill all fields");
+    return;
+  }
+
+  if(endDate < startDate){
+    alert("Ending date cannot be before starting date");
+    return;
+  }
+
+  /* Auto trip duration */
+  const diffDays = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000*60*60*24)) + 1;
+
+  /* =============================================
+     AUTO IMAGE SELECTION FOR NEW GROUPS
+     When a user creates a group, an image is
+     auto-picked based on the destination keyword.
+
+     ✏️  TO ADD A NEW DESTINATION'S AUTO IMAGE:
+         Add a new else if block:
+           else if(place.includes("your-place")){
+             imageUrl = "https://your-image-url.jpg";
+           }
+  ============================================= */
+  let imageUrl = "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&q=80";
+  const place  = destination.toLowerCase();
+
+  if(place.includes("india")){
+    imageUrl = "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=600&q=80";
+  } else if(place.includes("singapore")){
+    imageUrl = "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=600&q=80";
+  } else if(place.includes("nepal")){
+    imageUrl = "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=600&q=80";
+  } else if(place.includes("thailand")){
+    imageUrl = "https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=600&q=80";
+  } else if(place.includes("maldives")){
+    imageUrl = "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80";
+  } else if(place.includes("indonesia") || place.includes("bali")){
+    imageUrl = "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80";
+  }
+
+  /* Badge logic */
+  let badgeText = "Open";
+  if(size <= 10)  badgeText = "Limited";
+  else if(size >= 25) badgeText = "Trending";
+
+  const newGroup = {
+    name, destination, startDate, endDate,
+    size: parseInt(size),
+    joined: 1,
+    type,
+    price: "₹" + price + "/person",
+    duration: diffDays + " Days",
+    description,
+    badge: badgeText,
+    image: imageUrl
+  };
+
+  groups.unshift(newGroup);
+  displayGroups(groups);
+  alert("Travel Group Created Successfully");
+
+  /* Clear form */
+  ["groupName","destination","groupStartDate","groupEndDate",
+   "groupSize","groupPrice","groupType","groupDescription"]
+  .forEach(id => document.getElementById(id).value = "");
+
+}
+
+/* JOIN */
+function joinGroup(groupName){
+
+  groups.forEach(group => {
+    if(group.name === groupName){
+      if(group.joined < group.size){
+        group.joined++;
+        alert("You joined " + group.name);
+      } else {
+        alert("Group Full");
+      }
+    }
+  });
+
+  displayGroups(groups);
+
+}
+
+/* DETAILS */
+function showDetails(groupName){
+
+  groups.forEach(group => {
+    if(group.name === groupName){
+      alert(
+        "Group: "       + group.name        + "\n" +
+        "Destination: " + group.destination  + "\n" +
+        "Start Date: "  + group.startDate    + "\n" +
+        "End Date: "    + group.endDate      + "\n" +
+        "Members: "     + group.joined + "/" + group.size + "\n" +
+        "Type: "        + group.type         + "\n" +
+        "Price: "       + group.price        + "\n\n" +
+        "Description:\n"+ group.description
+      );
+    }
+  });
+
+}
+
+/* INITIAL LOAD */
+displayGroups(groups);
+
+</script>
 
 </body>
 </html>
