@@ -1,8 +1,10 @@
 from django.urls import path
-from django.contrib import admin
 from . import views
 
 urlpatterns = [
-    path("", views.index, name='home'),  # home pageyy
-    path("login/", views.login, name='login'),  # login page
+    path("", views.index, name='home'),
+    path("login/", views.login, name='login'),
+    path("travel/", views.travel, name='travel'),
+    path("trip/", views.trip, name='trip'),
+    path("sign/", views.sign, name='sign'),
 ]

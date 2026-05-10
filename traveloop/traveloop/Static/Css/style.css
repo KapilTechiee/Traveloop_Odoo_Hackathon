@@ -21,20 +21,18 @@ html {
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #FAF3D0;
+    background-color: #FAF3D0; /* Fixed: Removed the double hex */
     color: var(--text-dark);
     line-height: 1.6;
-    
 }
 
-/* --- Fixed Navbar --- */
 .navbar {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 80px;
-    background: #FAF3D0#fff9dc66;
+    background: #FAF3D0; /* Fixed: Removed the double hex */
     backdrop-filter: blur(12px);
     position: fixed;
     top: 0;
@@ -87,7 +85,9 @@ body {
 .stat-item h2 { font-size: 36px; }
 
 /* --- Destinations --- */
-.section { padding: 100px 80px; }
+.section { padding: 100px 80px;
+    background-color: #f8f2e6;
+}
 .section-title { text-align: center; margin-bottom: 60px; }
 .section-title h2 { font-family: 'Playfair Display', serif; font-size: 48px; }
 
@@ -103,27 +103,45 @@ body {
     color: white; display: flex; align-items: flex-end; padding: 25px;
 }
 
-.dest-card::before {
+.dest-card::before {    
     content: ""; position: absolute; inset: 0;
     background: linear-gradient(to top, #522d2db3, transparent);
 }
 
 .dest-content { position: relative; z-index: 2; }
-.kyoto { grid-row: span 2; background: #3b2418; }
-.barcelona { background: #5f0f40; }
-.bali { background: #264653; }
-.marrakech { background: #219ebc; }
-.reykjavik { background: #495057; }
+.kyoto { 
+    grid-row: span 2; 
+    background: #3b2418 url("../Images/maldives.jpg") no-repeat center/cover;
+}
+
+.barcelona { 
+    background: #5f0f40 url("../Images/nepal4.jpg") no-repeat center/cover;
+}
+
+.bali { 
+    background: #264653 url("../Images/rajasthan.jpg") no-repeat center/cover;
+}
+
+.marrakech { 
+    background: #219ebc url("../Images/singapore.jpg") no-repeat center/cover;
+}
+
+.reykjavik { 
+    background: #495057 url("../Images/taj.jpeg") no-repeat center/cover;
+}
 
 /* --- How it Works --- */
-.steps-section { padding: 100px 80px; background: #f1f5f9; }
+.steps-section { padding: 100px 80px; background: #fbfde4; }
 .steps-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
 .step-card { text-align: center; background: white; padding: 40px 20px; border-radius: 20px; box-shadow: var(--shadow); }
 .number { width: 30px; height: 30px; background: #f59e0b; color: white; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; }
 .icon { font-size: 40px; margin-bottom: 15px; }
 
 /* --- Plan Trip Section --- */
-.trip-section { padding: 100px 80px; }
+.trip-section { padding: 100px 80px; 
+    background-color: #eae8d382;
+
+}
 .trip-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
 .trip-main { background: rgb(255, 255, 255); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); }
 .trip-banner { padding: 40px; background: var(--primary-dark); color: white; }

@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Traveloop | Explore Together</title>
+    <title>RoamFree | Explore Together</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,18 +20,23 @@
         <nav class="navbar">
             <div class="logo">
                 <div class="logo-circle">◎</div>
-                <h2>Traveloop</h2>
+                <h2>RoamFree</h2>
             </div>
             <ul class="nav-links">
                 <li><a href="#plan">Plan Trip</a></li>
-                <li><a href="#tribe">Find Groups</a></li>
+                <li><a href="{% url 'travel' %}">Find Groups</a></li>
                 <li><a href="#destinations">Destinations</a></li>
             </ul>
-            <div class="nav-btns">
-                <button class="login-btn">Log in</button>
-                <button class="signup-btn">Sign up</button>
-            </div>
-        </nav>
+       <div class="nav-btns">
+
+   <a href="{% url 'login' %}">
+    <button class="login-btn">Log in</button>
+</a>
+
+<a href="{% url 'sign' %}">
+    <button class="signup-btn">Sign up</button>
+</a>
+</div>
     </header>
 
     <main>
@@ -55,37 +60,32 @@
         <section id="destinations" class="section">
             <div class="section-title">
                 <h2>Top Destinations</h2>
-                <p>Explore the most popular spots currently trending in the Traveloop community.</p>
+                <p>Explore the most popular spots currently trending in the RoamFree community.</p>
             </div>
             <div class="dest-grid">
                 <div class="dest-card kyoto">
                     <div class="dest-content">
-                        <small>Japan</small>
-                        <h3>Kyoto</h3>
+                        <h3>Maldives</h3>
                     </div>
                 </div>
                 <div class="dest-card barcelona">
                     <div class="dest-content">
-                        <small>Spain</small>
-                        <h3>Barcelona</h3>
+                        <h3>Nepal</h3>
                     </div>
                 </div>
                 <div class="dest-card bali">
                     <div class="dest-content">
-                        <small>Indonesia</small>
-                        <h3>Bali</h3>
+                        <h3>Egypt</h3>
                     </div>
                 </div>
                 <div class="dest-card marrakech">
                     <div class="dest-content">
-                        <small>Morocco</small>
-                        <h3>Marrakech</h3>
+                        <h3>Singapore</h3>
                     </div>
                 </div>
                 <div class="dest-card reykjavik">
                     <div class="dest-content">
-                        <small>Iceland</small>
-                        <h3>Reykjavik</h3>
+                        <h3>India</h3>
                     </div>
                 </div>
             </div>
@@ -93,7 +93,7 @@
 
         <section class="steps-section">
             <div class="section-title">
-                <h1>How Traveloop Works</h1>
+                <h1>How RoamFree Works</h1>
                 <p>From solo traveler to travel tribe in four simple steps.</p>
             </div>
             <div class="steps-container">
@@ -199,7 +199,7 @@
             <div class="footer-about">
                 <div class="logo">
                     <div class="logo-circle">◎</div>
-                    <h2>Traveloop</h2>
+                    <h2>RoamFree</h2>
                 </div>
                 <p>Connect with solo travelers and explore the world together.</p>
             </div>
@@ -221,7 +221,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 Traveloop. All rights reserved.</p>
+            <p>&copy; 2026 RoamFree. All rights reserved.</p>
             <p>Made for travelers worldwide</p>
         </div>
     </footer>
